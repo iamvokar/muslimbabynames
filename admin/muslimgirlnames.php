@@ -1,3 +1,34 @@
+<?php
+
+                   include "config.php";
+                    if(isset($_POST["submit"]))
+                    {
+                     
+						 
+                     $tables=$_POST["tables"];
+                     $english=$_POST["english"];
+                     $arabic=$_POST["arabic"];
+                     $meaning=$_POST["meaning"];
+                   $origin=$_POST["origin"];
+                     $number=$_POST["number"];
+                     $desc=$_POST["desc"];
+                   
+
+
+
+                      $sql= "INSERT INTO `muslimgirlnames` (tables,English,Arabic,Meaning,origin,number,description) VALUES ('$tables','$english','$arabic','$meaning','$origin','$number','$desc')"; 
+								if ($conn->query($sql) === TRUE) {
+								    header("location:muslimgirlnames.php");
+								} else {
+								    echo "Error: ".$sql ."<br>" .$conn->error;
+								}
+
+								
+								 
+                    }
+		?>
+
+
 <!DOCTYPE html>
 <html lang="en">
    <head>
@@ -86,8 +117,8 @@
                      <li>
                         <a href="#arabic" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-clone yellow_color"></i> <span>Arabic Baby Names</span></a>
                         <ul class="collapse list-unstyled" id="arabic">
-                           <li><a href="arabicboynames.php">> <span>Boy Names</span></a></li>
-                           <li><a href="arabicgirlnames.php">> <span>Girls Names</span></a></li>
+                           <li><a href="arabicboynames.php"> <span>Boy Names</span></a></li>
+                           <li><a href="arabicgirlnames.php"> <span>Girls Names</span></a></li>
                         </ul>
                      </li>
                      <li>
@@ -134,69 +165,119 @@
                   </nav>
                </div>
                <!-- end topbar -->
-               <!-- dashboard inner -->
-               <div class="midde_cont">
+    
+  <!-- dashboard inner -->
+  <div class="midde_cont">
+    <div class="container-fluid">
+       <div class="row column_title">
+          <div class="col-md-12 ">
+             <div class="page_title ">
+                <h2>Muslim Girl Tables</h2> 
+             </div>
+          </div>
+       </div>
+              
+             <div class="row justify-content-center">
+                
+              <div class="col-md-3 pb-3 pl-5 pt-3">
+               <a href="" class=" btn btn-lg btn-success " data-toggle="modal" data-target="#myModal"><i class="fa fa-plus" aria-hidden="true"></i> Add Name</a>
+              </div>
+                <!-- table section -->
+                <div class="col-md-10">
+                   <div class="white_shd full margin_bottom_30">
+                      <div class="full graph_head">
+                         <div class="heading1 margin_0">
+                            <h2>Muslim Girl Tables</h2>
+                         </div>
+                      </div>
+                      <div class="table_section padding_infor_info">
+                         <div class="table-responsive-sm">
+                         <table class="table table_row">
+                               <thead class="thead-dark">
+                                  <tr>
+                                      <th>#</th>
+                                     <th>English word</th>
+                                     <th>Arabic word</th>
+                                     <th>Meaning</th>
+                                     <th>Origin</th>
+                                     <th>Number</th>
+                                     <th>Description</th>
+                                     <th>Action</th>
+                                  </tr>
+                               </thead>
+                               <tbody>
+                               <?php
+                              $sql= "SELECT * FROM muslimgirlnames";
+                             $result=mysqli_query($conn,$sql) or die("data not fetch");
+                             while($row=mysqli_fetch_assoc($result))
+                            {
+                            ?><tr>
+                            <td><?php echo $row['id']; ?></td>
+                               <td><?php echo $row['English']; ?></td>
+                               <td><?php echo $row['Arabic']; ?></td>
+                              <td><?php echo $row['Meaning']; ?></td>
+                              <td><?php echo $row['origin']; ?></td>
+                               <td><?php echo $row['number']; ?></td>
+                              <td><?php echo $row['description']; ?></td>
+                              <td><a href="updates.php?id=<?php echo $row['id']; ?>&table=<?php echo $row['tables']; ?>" class=" btn btn-lg btn-success "> Update</a> <a href="delete.php?id=<?php echo $row['id']; ?>&table=<?php echo $row['tables']; ?>" class=" btn btn-lg btn-danger "> Delete</a></td>
+                          </tr>
+                            <?php  }?>
+                               </tbody>
+                            </table>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+              
+             </div>
+          </div>
+      
+          <!-- modal form -->
+          <div class="row justify-content-center" >
+              <div class="col-md-4" >
+                  <div class="modal fade" id="myModal">
+                      <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                             <div class="modal-header bg-dark">
+                                 <h4 class="modal-title text-white">Names</h4>
+                                 <button class="close" data-dismiss="modal">
+                                   <span>&#9747;</span>
+                              </button>
+                             </div>
+                             <div class="modal-body bg-light">
+                             
+                                  <form class="" method="post" action="muslimgirlnames.php">
+                                      <div class="form-group"><input class="form-control" type="hidden"  name="tables" value="muslimgirlnames"/></div>
+                                      <div class="form-group"><input class="form-control" type="text" name="english" placeholder="English Word"></div>
+                                      <div class="form-group"><input class="form-control" type="text" name="arabic" placeholder="Arabic Word"></div>
+                                      <div class="form-group"><textarea class="form-control" name="meaning" placeholder="Meaning" rows="5"></textarea></div>
+                                      <div class="form-group"><input class="form-control" type="text" name="origin" placeholder="Origin"></div>
+                                      <div class="form-group"><input class="form-control" type="text" name="number" placeholder="Lucky Number"></div>
+                                      <div class="form-group"><textarea class="form-control" name="desc" placeholder="Description" rows="8"></textarea></div>
+                                  
+                              </div>
+                            <div class="modal-footer bg-dark">
+                             <button class="btn btn-warning text-dark" name="submit">Add</button>
+                                <button class="btn btn-danger" data-dismiss="modal">close</button>
+                            </div>
+                            </form>
+                            
+                          </div>
+                      </div>
+                  </div>
+                  </div>
+                  </div>
+          <!-- modal form end -->
+    
+                  <!-- footer -->
                   <div class="container-fluid">
-                     <div class="row column_title">
-                        <div class="col-md-12">
-                           <div class="page_title">
-                              <h2>Profile</h2>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- row -->
-                     <div class="row column1">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-8">
-                           <div class="white_shd full margin_bottom_30">
-                              <div class="full graph_head">
-                                 <div class="heading1 margin_0">
-                                    <h2>Admin profile</h2>
-                                 </div>
-                              </div>
-                              <div class="full price_table padding_infor_info">
-                                 <div class="row">
-                                    <!-- user profile section -->
-                                    <!-- profile image -->
-                                    <div class="col-lg-12">
-                                       <div class="full dis_flex center_text">
-                                          <div class="profile_img"><img width="180" class="rounded-circle"
-                                                src="images/layout_img/user_img.jpg" alt="#" /></div>
-                                          <div class="profile_contant">
-                                             <div class="contact_inner">
-                                                <h3>Admin</h3>
-               
-                                                <ul class="list-unstyled">
-                                                   <li><i class="fa fa-envelope-o"></i> : test@gmail.com</li>
-                                                   <li><i class="fa fa-phone"></i> : 987 654 3210</li>
-                                                </ul>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
+                     <div class="footer">
+                        <p>Copyright © 2018 MuslimBabyNames  . All rights reserved.<br>
+                           Designed by <a href="https://ansrone.com/">AnsrOne</a></p>
                      </div>
                   </div>
                </div>
-               </div>
-               </div>
-               </div>
-                                           
-
-                     <!-- footer -->
-                     <div class="container-fluid">
-                        <div class="row">
-                           <div class="footer">
-                              <p>Copyright © 2018 Designed by html.design. All rights reserved.</p>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- end dashboard inner -->
-               </div>
+               <!-- end dashboard inner -->
             </div>
          </div>
       </div>
@@ -222,7 +303,6 @@
       </script>
       <!-- custom js -->
       <script src="js/custom.js"></script>
-      <!-- calendar file css -->    
-      <script src="js/semantic.min.js"></script>
+      <script src="js/chart_custom_style1.js"></script>
    </body>
 </html>

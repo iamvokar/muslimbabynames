@@ -183,6 +183,8 @@ th, td {
 
 .column2 {
   width: 13%;
+  font-weight: 800;
+  font-size: 25px;
 }
 
 .column3 {
@@ -593,3 +595,4 @@ th, td {
 {
   border : 1px solid black;
 }
+
